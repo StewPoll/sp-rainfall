@@ -26,42 +26,46 @@ class User
     /**
      * @var string Password Hash
      */
-    private string $passwordHash;
+    private string $password;
 
     /**
      * User constructor.
      * @param string $id
      * @param string $username
-     * @param string $passwordHash
+     * @param string $displayName
+     * @param string $password
      */
-    private function __construct(string $id, string $username, string $passwordHash)
+    private function __construct(string $id, string $username, string $displayName, string $password)
     {
         $this->id = $id;
         $this->username = $username;
-        $this->passwordHash = $passwordHash;
+        $this->displayName = $displayName;
+        $this->password = $password;
     }
 
     /**
      * @param string $id
      * @param string $username
+     * @param string $displayName
      * @param string $passwordHash
      * @return $this
      */
-    public function restore(string $id, string $username, string $passwordHash): User
+    public static function restore(string $id, string $username, string $displayName, string $passwordHash): User
     {
-        return new static($id, $username, $passwordHash);
+        return new static($id, $username, $displayName, $passwordHash);
     }
 
     /**
      * @param string $username
+     * @param string $displayName
      * @param string $password
      * @return $this
      */
-    public function createWith(string $username, string $password): User
+    public static function createWith(string $username, string $displayName, string $password): User
     {
         $id = Uuid::uuid4()->toString();
         $passwordHash = self::hashPassword($password);
-        return new static($id, $username, $passwordHash);
+        return new static($id, $username, $displayName, $passwordHash);
     }
 
     /**
@@ -88,17 +92,49 @@ class User
      */
     public function verifyPassword($password): bool
     {
-        return password_verify($password, $this->passwordHash);
+        return password_verify($password, $this->password);
     }
 
     /**
      * Hashes Password using ARGON2
      *
      * @param $password
-     * @return false|string|null
+     * @return string
      */
-    public static function hashPassword($password)
+    private function hashPassword($password): string
     {
         return password_hash($password, PASSWORD_ARGON2ID);
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $displayName
+     */
+    public function setDisplayName(string $displayName): void
+    {
+        $this->displayName = $displayName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = self::hashPassword($password);
     }
 }

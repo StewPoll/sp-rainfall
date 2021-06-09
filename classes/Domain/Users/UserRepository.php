@@ -17,9 +17,9 @@ interface UserRepository
      * Finds a user by their ID
      *
      * @param string $id
-     * @return User
+     * @return User|null
      */
-    public function findById(string $id): User;
+    public function findById(string $id): ?User;
 
     /**
      * Adds a user
