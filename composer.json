@@ -1,0 +1,20 @@
+{
+    "name": "stewart/sp-rainfall",
+    "description": "A simple app for tracking rainfall amounts",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stewart Polley",
+            "email": "myself@stewpolley.com"
+        }
+    ],
+    "require": {
+        "elvanto/picodb": "^2.0",
+        "league/container": "^3.3",
+        "pecee/simple-router": "^4.3",
+        "twig/twig": "^3.0",
+        "robmorgan/phinx": "^0.12.7",
+        "ramsey/uuid": "^4.1"
+    }
+}
